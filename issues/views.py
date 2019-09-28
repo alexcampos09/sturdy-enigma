@@ -9,8 +9,8 @@ from issues.models import *
 
 class IssueListView(ListView):
     model = Issue
-    template_name = 'issue_list.html'
+    template_name = 'issues/issue_list.html'
 
 class IssueDetailView(DetailView):
     model = Issue
-    template_name = 'issue_detail.html'
+    template_name = 'issues/issue_detail.html'

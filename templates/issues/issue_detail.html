@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block title %}Issue Detail{% endblock %}
+
+{% block content %}
+  <h1>{{ issue.name }}</h1>
+  <p>{{ issue.description }}</p>
+  <p>Created: {{ issue.created|date }}</p>
+  <p>Updated: {{ issue.updated|date }}</p>
+{% endblock %}
