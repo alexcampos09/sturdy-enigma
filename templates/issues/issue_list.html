@@ -5,12 +5,10 @@
 {% block content %}
   <h1>Issue List</h1>
   {% if issue_list %}
-  <ul>
-    {% for issue in issue_list %}
-      <li>
-        <a href="{{ issue.get_absolute_url }}">{{ issue.name }}</a>
-      </li>
-    {% endfor %}
-  </ul>
+    <ul>
+      {% for issue in issue_list %}
+        <li><a href="{{ issue.get_absolute_url }}">{{ issue.name }}</a></li>
+      {% endfor %}
+    </ul>
   {% endif %}
 {% endblock %}

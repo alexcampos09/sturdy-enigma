@@ -14,3 +14,4 @@ class IssueListView(ListView):
 class IssueDetailView(DetailView):
     model = Issue
     template_name = 'issues/issue_detail.html'
+    
