@@ -1,3 +1,3 @@
-Python tabs use 4 spaces
+Python files have 4 space tabs
 
-HTML, CSS and Javascript tabs use 2 spaces
+HTML, CSS and Javascript files have 2 spaces tabs
