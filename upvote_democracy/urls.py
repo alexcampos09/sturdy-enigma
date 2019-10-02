@@ -20,13 +20,14 @@ from django.contrib.auth import views as auth_views
 from django.urls import path, include
 
 # Local
-from upvote_democracy.views import IndexView
+from upvote_democracy import views
 
 
 urlpatterns = [
-    path('', IndexView.as_view(), name='index'),
+    path('', views.IndexView.as_view(), name='index'),
     path('admin/', admin.site.urls),
     path('login/', auth_views.LoginView.as_view(), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    # path('signup/', views.SignUpView.as_view(), name='signup'),
     path('issues/', include('issues.urls')),
 ]
