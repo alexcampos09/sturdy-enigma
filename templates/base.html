@@ -34,16 +34,16 @@
             <li class="nav-item">
               <a class="nav-link" href="{% url 'account_login' %}"><span class="fas fa-sign-in-alt"></span> Login</a>
             </li>
-
           {% else %}
-            <li class="nav-item"><a class="nav-link" href="">{{ request.user }}</a></li>
             <li class="nav-item">
               <a class="nav-link" href="{% url 'account_logout' %}"><span class="fas fa-sign-in-alt"></span> Logout</a>
             </li>
             {% if user.is_superuser %}
-            <li class="nav-item">
-              <a class="nav-link" href="/admin"> Admin</a>
-            </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/admin"> Admin</a>
+              </li>
+            {% else %}
+              <li class="nav-item"><a class="nav-link" href="">{{ request.user }}</a></li>
             {% endif %}
           {% endif %}
         </ul>
