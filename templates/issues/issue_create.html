@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Issue{% endblock %}
+
+{% block content %}
+  <br>
+  <form method="post" action="">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit"/>
+  </form>
+{% endblock %}
