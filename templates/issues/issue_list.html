@@ -3,13 +3,19 @@
 {% block title %}Issues{% endblock %}
 
 {% block content %}
+
   <h1>Issue List</h1>
+  <br>
+  <a class="btn btn-primary" href="{% url 'issue-create' %}" role="button">Create an Issue</a>
+  <br><br>
   {% if issue_list %}
     <ul>
       {% for issue in issue_list %}
         <li><a href="{{ issue.get_absolute_url }}">{{ issue.name }}</a></li>
+        <li>{{ issue.created }}</li>
+        <br>
       {% endfor %}
     </ul>
   {% endif %}
-  
+
 {% endblock %}
