@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Local
     'issues',
+    'profiles',
     # Third Party
     'allauth',
     'allauth.account',

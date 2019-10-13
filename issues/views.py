@@ -1,8 +1,7 @@
 # Django
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse, reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
+from django.urls import reverse
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 
 # Local
 from issues.models import Issue

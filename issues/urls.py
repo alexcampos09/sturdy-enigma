@@ -2,7 +2,7 @@
 from django.urls import path
 
 # Local
-from issues.views import *
+from issues.views import IssueListView, IssueDetailView, IssueUpdateView, IssueCreateView
 
 urlpatterns = [
     path(r'', IssueListView.as_view(), name='issues'),
