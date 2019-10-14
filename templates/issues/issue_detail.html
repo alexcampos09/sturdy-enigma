@@ -3,7 +3,8 @@
 {% block title %}Issue Detail{% endblock %}
 
 {% block content %}
-  <h1>{{ issue.name }}</h1>
-  <p>{{ issue.description }}</p>
+  <h1>{{ issue.title }}</h1>
+  <p>{{ issue.body }}</p>
+  <p>{{ issue.upvotes }}</p>
   <a class="btn btn-primary" href="{% url 'issue-update' pk=issue.pk %}" role="button">Edit</a>
 {% endblock %}

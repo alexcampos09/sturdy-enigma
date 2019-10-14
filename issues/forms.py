@@ -8,4 +8,4 @@ from issues.models import Issue
 class IssueForm(ModelForm):
     class Meta:
         model = Issue
-        fields = ['name', 'description']
+        fields = ['title', 'body']

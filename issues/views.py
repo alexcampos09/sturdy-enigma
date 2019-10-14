@@ -12,6 +12,10 @@ class IssueListView(ListView):
     model = Issue
     template_name = 'issues/issue_list.html'
 
+    def get_queryset(self):
+        original_queryset = super().get_queryset()
+        return original_queryset.order_by('-upvotes')
+
 class IssueDetailView(DetailView):
     model = Issue
     template_name = 'issues/issue_detail.html'
