@@ -4,8 +4,8 @@ from django.urls import reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 
 # Local
-from issues.models import Issue
-from issues.forms import IssueForm
+from issues.models import Issue, Solution
+from issues.forms import IssueForm, SolutionForm
 
 
 class IssueListView(ListView):
@@ -24,6 +24,13 @@ class IssueCreateView(LoginRequiredMixin, CreateView):
     model = Issue
     form_class = IssueForm
     template_name = "issues/issue_create.html"
+
+    def form_valid(self, form):
+        if form.is_valid():
+            issue = form.save(commit=False)
+            issue.profile = self.request.user.profile
+            issue.save()
+        return super().form_valid(form)
 
     def get_success_url(self):
         return reverse('issue-detail', kwargs={'pk' : self.object.pk})
