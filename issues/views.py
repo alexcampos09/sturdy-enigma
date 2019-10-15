@@ -20,6 +20,13 @@ class IssueDetailView(DetailView):
     model = Issue
     template_name = 'issues/issue_detail.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        object = self.get_object()
+        context['solutions'] = object.solution_set.all().order_by('-upvotes')
+        context['form'] = SolutionForm()
+        return context
+
 class IssueCreateView(LoginRequiredMixin, CreateView):
     model = Issue
     form_class = IssueForm
@@ -27,9 +34,9 @@ class IssueCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         if form.is_valid():
-            issue = form.save(commit=False)
-            issue.profile = self.request.user.profile
-            issue.save()
+            object = form.save(commit=False)
+            object.profile = self.request.user.profile
+            object.save()
         return super().form_valid(form)
 
     def get_success_url(self):

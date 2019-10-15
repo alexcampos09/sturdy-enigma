@@ -24,14 +24,14 @@ class Issue(models.Model):
 
 class Solution(models.Model):
 	issue = models.ForeignKey(Issue, on_delete=models.CASCADE)
-	title = models.CharField(max_length=120, help_text='Issue', blank=False, null=False)
+	title = models.CharField(max_length=120, blank=False, null=False)
 	body = models.TextField(blank=False, null=False)
 	upvotes = models.IntegerField(default=0)
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
 
 	def __str__(self):
-		return self.issue
+		return self.title
 
 	class Meta:
 		db_table = 'solutions'

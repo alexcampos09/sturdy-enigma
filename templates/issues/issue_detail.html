@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
 {% block title %}Issue Detail{% endblock %}
 
@@ -11,4 +12,21 @@
   {% if issue.profile == request.user.profile %}
     <a class="btn btn-primary" href="{% url 'issue-update' pk=issue.pk %}" role="button">Edit</a>
   {% endif %}
+
+  <br><br>
+  <hr>
+  {% for solution in solutions %}
+    <h3>{{ solution.title }}</h3>
+    <p>{{ solution.body }}</p>
+    <p>{{ solution.upvotes }}</p>
+    <p>{{ solution.profile }}</p>
+  {% endfor %}
+
+  <hr>
+  <h3>Write your solution</h3>
+  <form method="post" action="" class="form-horizontal">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input type="submit" value="Submit"/>
+  </form>
 {% endblock %}
