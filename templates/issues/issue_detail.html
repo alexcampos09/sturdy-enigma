@@ -8,6 +8,9 @@
   <p>{{ issue.body }}</p>
   <p>{{ issue.upvotes }}</p>
   <p>{{ issue.profile }}</p>
+  <button type="button" class="btn btn-default" aria-label="Left Align">
+    <span class="fas fa-arrow-circle-up fa-2x" aria-hidden="true"></span>
+  </button>
 
   {% if issue.profile == request.user.profile %}
     <a class="btn btn-primary" href="{% url 'issue-update' pk=issue.pk %}" role="button">Edit</a>
@@ -29,3 +32,5 @@
     <input type="submit" value="Submit"/>
   </form>
 {% endblock %}
+
+{% block script %}{% endblock %}
