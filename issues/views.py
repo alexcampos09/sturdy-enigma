@@ -1,6 +1,7 @@
 # Django
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
+from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 
 # Local
@@ -16,7 +17,7 @@ class IssueListView(ListView):
         original_queryset = super().get_queryset()
         return original_queryset.order_by('-upvotes')
 
-class IssueDetailView(DetailView):
+class IssueGetDetailView(DetailView):
     model = Issue
     template_name = 'issues/issue_detail.html'
 
@@ -26,6 +27,38 @@ class IssueDetailView(DetailView):
         context['solutions'] = object.solution_set.all().order_by('-upvotes')
         context['form'] = SolutionForm()
         return context
+
+class SolutionPostCreateView(LoginRequiredMixin, CreateView):
+    model = Solution
+    form_class = SolutionForm
+    template_name = 'issues/issue_detail.html'
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super().post(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        if form.is_valid():
+            pk = self.request.path.split('/')[-1]
+            object = form.save(commit=False)
+            object.issue_id = pk
+            object.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        print("success", self.object, self.object.issue, self.object.issue.pk)
+        return reverse('issue-detail', kwargs={'pk' : self.object.issue.pk})
+
+class IssueDetailView(View):
+    """IssueGetDetailView and SolutionPostCreateView above work together to compose this view"""
+
+    def get(self, request, *args, **kwargs):
+        view = IssueGetDetailView.as_view()
+        return view(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        view = SolutionPostCreateView.as_view()
+        return view(request, *args, **kwargs)
 
 class IssueCreateView(LoginRequiredMixin, CreateView):
     model = Issue
