@@ -14,15 +14,14 @@
   {% endif %}
 
   <br><br>
-  <hr>
   {% for solution in solutions %}
     <h3>{{ solution.title }}</h3>
     <p>{{ solution.body }}</p>
     <p>{{ solution.upvotes }}</p>
     <p>{{ solution.profile }}</p>
+    <hr>
   {% endfor %}
 
-  <hr>
   <h3>Write your solution</h3>
   <form method="post" action="" class="form-horizontal">
     {% csrf_token %}

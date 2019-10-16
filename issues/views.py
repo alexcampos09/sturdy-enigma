@@ -33,10 +33,6 @@ class SolutionPostCreateView(LoginRequiredMixin, CreateView):
     form_class = SolutionForm
     template_name = 'issues/issue_detail.html'
 
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        return super().post(request, *args, **kwargs)
-
     def form_valid(self, form):
         if form.is_valid():
             pk = self.request.path.split('/')[-1]
@@ -46,7 +42,6 @@ class SolutionPostCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        print("success", self.object, self.object.issue, self.object.issue.pk)
         return reverse('issue-detail', kwargs={'pk' : self.object.issue.pk})
 
 class IssueDetailView(View):
