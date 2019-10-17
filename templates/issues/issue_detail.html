@@ -1,36 +1,60 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load crispy_forms_tags %}
 
 {% block title %}Issue Detail{% endblock %}
 
 {% block content %}
-  <h1>{{ issue.title }}</h1>
-  <p>{{ issue.body }}</p>
-  <p>{{ issue.upvotes }}</p>
-  <p>{{ issue.profile }}</p>
-  <button type="button" class="btn btn-default" aria-label="Left Align">
-    <span class="fas fa-arrow-circle-up fa-2x" aria-hidden="true"></span>
-  </button>
+  <div class="row issue">
+    <div class="col-md-1">
+      <button type="button" class="btn btn-default" aria-label="Left Align">
+        <span class="vote"></span>
+      </button>
+      <h4 class="upvotes">{{ issue.upvotes }}</h4>
 
-  {% if issue.profile == request.user.profile %}
-    <a class="btn btn-primary" href="{% url 'issue-update' pk=issue.pk %}" role="button">Edit</a>
-  {% endif %}
+      {% if issue.profile == request.user.profile %}
+        <a class="btn btn-primary edit-button" href="{% url 'issue-update' pk=issue.pk %}"
+          role="button">Edit
+        </a>
+      {% endif %}
+    </div>
 
-  <br><br>
+    <div class="col-md-11">
+      <h1>{{ issue.title }}</h1>
+      <p>{{ issue.body }}</p>
+      <p>{{ issue.profile }}</p>
+      <p>{{ issue.created }}</p>
+    </div>
+  </div>
+  <hr>
+
   {% for solution in solutions %}
-    <h3>{{ solution.title }}</h3>
-    <p>{{ solution.body }}</p>
-    <p>{{ solution.upvotes }}</p>
-    <p>{{ solution.profile }}</p>
+    <div class="row solution">
+        <div class="col-md-1">
+          <button type="button" class="btn btn-default" aria-label="Left Align">
+            <span class="vote"></span>
+          </button>
+          <h4 class="upvotes">{{ solution.upvotes }}</h4 class="upvotes">
+        </div>
+
+        <div class="col-md-11">
+            <h3>{{ solution.title }}</h3>
+            <p>{{ solution.body }}</p>
+            <p>{{ solution.profile }}</p>
+            <p>{{ solution.created }}</p>
+        </div>
+    </div>
     <hr>
   {% endfor %}
 
   <h3>Write your solution</h3>
-  <form method="post" action="" class="form-horizontal">
+  <form method="post" action="" class="form-horizontal solution-form">
     {% csrf_token %}
     {{ form|crispy }}
-    <input type="submit" value="Submit"/>
+    <input type="submit" role="button" class="btn btn-primary" value="Post your solution" />
   </form>
 {% endblock %}
 
-{% block script %}{% endblock %}
+{% block script %}
+  <script type="text/javascript" src="{% static 'js/base.js' %}"></script>
+{% endblock %}

@@ -7,8 +7,8 @@ from profiles.models import Profile
 
 class Issue(models.Model):
 	profile = models.ForeignKey(Profile, on_delete=models.SET_NULL, blank=True, null=True)
-	title = models.CharField(max_length=120, help_text='Issue', blank=False, null=False)
-	body = models.TextField(help_text="What's wrong?", blank=False, null=False)
+	title = models.CharField(max_length=120, blank=False, null=False)
+	body = models.TextField(blank=False, null=False)
 	upvotes = models.IntegerField(default=0)
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
