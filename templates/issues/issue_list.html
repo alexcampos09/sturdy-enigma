@@ -9,14 +9,22 @@
   <a class="btn btn-primary" href="{% url 'issue-create' %}" role="button">Create an Issue</a>
   <br><br>
   {% if issue_list %}
-    <ul>
-      {% for issue in issue_list %}
-        <li><a href="{{ issue.get_absolute_url }}">{{ issue.title }}</a></li>
-        <li>{{ issue.upvotes }}</li>
-        <li>{{ issue.created }}</li>
-        <br>
-      {% endfor %}
-    </ul>
+    {% for issue in issue_list %}
+      <div class="row">
+        <div class="col-md-1">
+          <button type="button" class="btn btn-default" aria-label="Left Align">
+            <span class="vote on"></span>
+          </button>
+          <h4 class="upvotes">{{ issue.upvotes }}</h4>
+        </div>
+        <div class="col-md-11">
+          <h3><a href="{{ issue.get_absolute_url }}">{{ issue.title }}</a></h3>
+          <p>{{ issue.created }}</p>
+          <br>
+          <hr>
+        </div>
+      </div>
+    {% endfor %}
   {% endif %}
 
 {% endblock %}

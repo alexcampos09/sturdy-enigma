@@ -1,5 +1,6 @@
 # Django
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse
 from django.urls import reverse
 from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
@@ -77,3 +78,12 @@ class IssueUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse('issue-detail', kwargs={'pk' : self.object.pk})
+
+class IssueUpvoteView(LoginRequiredMixin, UpdateView):
+    model = Issue
+
+    def post(self, request, *args, **kwargs):
+        object = self.get_object()
+        object.upvotes += 1
+        object.save()
+        return HttpResponse(status=200)
