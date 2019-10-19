@@ -1,7 +1,7 @@
 // Make upvote orange
 for (const btn of document.querySelectorAll('.vote')) {
 	btn.addEventListener('click', event => {
-		event.target.classList.toggle('on');
+		event.target.classList.add('on');
 	});
 }
 
@@ -13,6 +13,14 @@ $("#upvote-issue").click(function() {
 		url: pk + "/upvote-issue",
 		type: "POST",
 		SameSite: "Strict",
+		success: function(data) {
+			if (data.casted) {
+				alert(data.casted)
+			}
+			else {
+				$('#upvote-issue-display').text(data.upvotes)
+			}
+		},
 		error: function(error) {
 			console.log("Response error: ", error)
 		}

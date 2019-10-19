@@ -8,9 +8,10 @@
   <div class="row issue">
     <div class="col-md-1">
       <button id="upvote-issue" type="button" class="btn btn-default" aria-label="Left Align">
-        <span class="vote"></span>
+        <span class="vote {{ casted|yesno:"on," }}"></span>
       </button>
-      <h4 class="upvotes">{{ issue.upvotes }}</h4>
+
+      <h4 class="upvotes" id="upvote-issue-display">{{ issue.upvotes }}</h4>
 
       {% if issue.profile == request.user.profile %}
         <a class="btn btn-primary edit-button" href="{% url 'issue-update' pk=issue.pk %}"

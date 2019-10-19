@@ -1,6 +1,6 @@
 # Django
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse
+from django.http import JsonResponse
 from django.urls import reverse
 from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
@@ -27,6 +27,7 @@ class IssueGetDetailView(DetailView):
         object = self.get_object()
         context['solutions'] = object.solution_set.all().order_by('-upvotes')
         context['form'] = SolutionForm()
+        context['casted'] = True
         return context
 
 class SolutionPostCreateView(LoginRequiredMixin, CreateView):
@@ -83,7 +84,13 @@ class IssueUpvoteView(LoginRequiredMixin, UpdateView):
     model = Issue
 
     def post(self, request, *args, **kwargs):
+        if False:
+            data = {
+                "casted": "Your vote was already contabilized."
+            }
+            return JsonResponse(data=data)
         object = self.get_object()
         object.upvotes += 1
         object.save()
-        return HttpResponse(status=200)
+        data = {"upvotes": object.upvotes}
+        return JsonResponse(data=data)
