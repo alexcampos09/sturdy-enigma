@@ -7,7 +7,8 @@
 {% block content %}
   <div class="row issue">
     <div class="col-md-1">
-      <button id="upvote-issue" type="button" class="btn btn-default" aria-label="Left Align">
+      <button id="upvote-issue" type="button" class="btn btn-default" aria-label="Left Align"
+        data-toggle="modal" data-target="{{ casted|yesno:"#casted-vote," }}">
         <span class="vote {{ casted|yesno:"on," }}"></span>
       </button>
 
@@ -54,6 +55,16 @@
     {{ form|crispy }}
     <input type="submit" role="button" class="btn btn-primary" value="Post your solution" />
   </form>
+
+  <!-- Modal -->
+  <div class="modal fade bd-example-modal-sm" id="casted-vote" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body">Your vote was already contabilized.</div>
+      </div>
+    </div>
+  </div>
+  <!-- End Modal -->
 {% endblock %}
 
 {% block script %}

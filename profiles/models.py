@@ -1,7 +1,7 @@
 # Django
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models.signals import post_save
+from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 
 # def upload_location(instance, filename):
@@ -30,6 +30,13 @@ class Profile(models.Model):
 
     class Meta:
     	db_table = 'profiles'
+
+@receiver(pre_save, sender=User)
+def user_pre_save(sender, instance, *args, **kwargs):
+    if not instance.pk:
+        email = instance.email.lower()
+        instance.email = email
+        instance.username = email
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
