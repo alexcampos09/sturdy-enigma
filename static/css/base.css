@@ -28,7 +28,10 @@ ul {
   background-position: 0 -25px;
 }
 
-
 .vote.on {
   background-position: 0 2px;
+}
+
+.issue-list-button {
+  cursor: default;
 }

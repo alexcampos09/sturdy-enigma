@@ -5,8 +5,6 @@ for (const btn of document.querySelectorAll('.vote')) {
 	});
 }
 
-var csrftoken = Cookies.get('csrftoken');
-
 $("#upvote-issue").click(function() {
 	let pk = window.location.href.split('/').slice(-1)[0]
   $.ajax({
@@ -26,6 +24,7 @@ $("#upvote-issue").click(function() {
 });
 
 // Ajax Boilerplate
+var csrftoken = Cookies.get('csrftoken');
 function csrfSafeMethod(method) {
     // these HTTP methods do not require CSRF protection
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
