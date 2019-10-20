@@ -56,7 +56,7 @@ class Solution(models.Model):
 		db_table = 'solutions'
 
 class SolutionUpvote(models.Model):
-	solution = models.ForeignKey(Issue, on_delete=models.CASCADE)
+	solution = models.ForeignKey(Solution, on_delete=models.CASCADE)
 	profile = models.ForeignKey(Profile, on_delete=models.SET_NULL, blank=True, null=True)
 	# Meta
 	created = models.DateTimeField(auto_now_add=True)
