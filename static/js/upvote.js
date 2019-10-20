@@ -14,11 +14,9 @@ $("#upvote-issue").click(function() {
 		type: "POST",
 		SameSite: "Strict",
 		success: function(data) {
-			if (data.casted) {
-				alert(data.casted)
-			}
-			else {
+			if (data) {
 				$('#upvote-issue-display').text(data.upvotes)
+				$('#upvote-issue').attr('data-target', '#casted-vote')
 			}
 		},
 		error: function(error) {

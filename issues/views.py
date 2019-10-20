@@ -1,12 +1,12 @@
 # Django
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.urls import reverse
 from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 
 # Local
-from issues.models import Issue, Solution
+from issues.models import Issue, IssueUpvote, Solution, SolutionUpvote
 from issues.forms import IssueForm, SolutionForm
 
 
@@ -24,10 +24,11 @@ class IssueGetDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        object = self.get_object()
-        context['solutions'] = object.solution_set.all().order_by('-upvotes')
+        issue = self.get_object()
+        context['solutions'] = issue.solution_set.all().order_by('-upvotes')
         context['form'] = SolutionForm()
-        context['casted'] = True
+        casted = issue.issueupvote_set.filter(profile=self.request.user.profile)
+        context['casted'] = True if casted else False
         return context
 
 class SolutionPostCreateView(LoginRequiredMixin, CreateView):
@@ -38,9 +39,9 @@ class SolutionPostCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         if form.is_valid():
             pk = self.request.path.split('/')[-1]
-            object = form.save(commit=False)
-            object.issue_id = pk
-            object.save()
+            solution = form.save(commit=False)
+            solution.issue_id = pk
+            solution.save()
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -64,9 +65,10 @@ class IssueCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         if form.is_valid():
-            object = form.save(commit=False)
-            object.profile = self.request.user.profile
-            object.save()
+            profile = self.request.user.profile
+            issue = form.save(commit=False)
+            issue.profile = profile
+            issue.save()
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -84,13 +86,13 @@ class IssueUpvoteView(LoginRequiredMixin, UpdateView):
     model = Issue
 
     def post(self, request, *args, **kwargs):
-        if False:
-            data = {
-                "casted": "Your vote was already contabilized."
-            }
-            return JsonResponse(data=data)
-        object = self.get_object()
-        object.upvotes += 1
-        object.save()
-        data = {"upvotes": object.upvotes}
+        profile = self.request.user.profile
+        issue = self.get_object()
+        casted = issue.issueupvote_set.filter(profile=profile)
+        if casted:
+            return HttpResponse()
+        IssueUpvote(issue=issue, profile=profile).save()
+        issue.upvotes += 1
+        issue.save()
+        data = {"upvotes": issue.upvotes}
         return JsonResponse(data=data)

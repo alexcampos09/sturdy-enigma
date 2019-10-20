@@ -10,6 +10,7 @@ class Issue(models.Model):
 	title = models.CharField(max_length=120, blank=False, null=False)
 	body = models.TextField(blank=False, null=False)
 	upvotes = models.IntegerField(default=0)
+	# Meta
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
 
@@ -22,11 +23,25 @@ class Issue(models.Model):
 	class Meta:
 		db_table = 'issues'
 
+class IssueUpvote(models.Model):
+	issue = models.ForeignKey(Issue, on_delete=models.CASCADE)
+	profile = models.ForeignKey(Profile, on_delete=models.SET_NULL, blank=True, null=True)
+	# Meta
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
+
+	def __str__(self):
+		return f"{self.profile}"
+
+	class Meta:
+		db_table = 'issue_upvote'
+
 class Solution(models.Model):
 	issue = models.ForeignKey(Issue, on_delete=models.CASCADE)
 	title = models.CharField(max_length=120, blank=False, null=False)
 	body = models.TextField(blank=False, null=False)
 	upvotes = models.IntegerField(default=0)
+	# Meta
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
 
@@ -35,3 +50,17 @@ class Solution(models.Model):
 
 	class Meta:
 		db_table = 'solutions'
+
+class SolutionUpvote(models.Model):
+	solution = models.ForeignKey(Issue, on_delete=models.CASCADE)
+	profile = models.ForeignKey(Profile, on_delete=models.SET_NULL, blank=True, null=True)
+	upvotes = models.IntegerField(default=0)
+	# Meta
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
+
+	def __str__(self):
+		return f"{self.profile}"
+
+	class Meta:
+		db_table = 'solution_upvote'
