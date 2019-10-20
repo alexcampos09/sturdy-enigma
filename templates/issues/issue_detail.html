@@ -7,12 +7,12 @@
 {% block content %}
   <div class="row issue">
     <div class="col-md-1">
-      <button id="upvote-issue" type="button" class="btn btn-default" aria-label="Left Align"
-        data-toggle="modal" data-target="{{ casted|yesno:"#casted-vote," }}">
+      <button id="issue-upvote" type="button" class="btn btn-default" aria-label="Left Align"
+        data-toggle="modal" data-target="{{ casted|yesno:'#casted-vote,' }}">
         <span class="vote {{ casted|yesno:"on," }}"></span>
       </button>
 
-      <h4 class="upvotes" id="upvote-issue-display">{{ issue.upvotes }}</h4>
+      <h4 class="upvotes" id="issue-upvote-display">{{ issue.upvotes }}</h4>
 
       {% if issue.profile == request.user.profile %}
         <a class="btn btn-primary edit-button" href="{% url 'issue-update' pk=issue.pk %}"
@@ -30,10 +30,12 @@
   </div>
   <hr>
 
-  {% for solution in solutions %}
-    <div class="row solution">
+  <div id="solutions">
+    {% for solution in solutions %}
+      <div class="row solution">
         <div class="col-md-1">
-          <button type="button" class="btn btn-default" aria-label="Left Align">
+          <button id="solution-upvote-{{ solution.pk }}" type="button" class="btn btn-default"
+            aria-label="Left Align" data-toggle="modal" data-target="{{ casted|yesno:'#casted-vote,' }}">
             <span class="vote"></span>
           </button>
           <h4 class="upvotes">{{ solution.upvotes }}</h4>
@@ -45,9 +47,10 @@
             <p>{{ solution.profile }}</p>
             <p>{{ solution.created }}</p>
         </div>
-    </div>
-    <hr>
-  {% endfor %}
+      </div>
+      <hr>
+    {% endfor %}
+  </div>
 
   <h3>Write your solution</h3>
   <form method="post" action="" class="form-horizontal solution-form">

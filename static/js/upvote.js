@@ -5,16 +5,17 @@ for (const btn of document.querySelectorAll('.vote')) {
 	});
 }
 
-$("#upvote-issue").click(function() {
-	let pk = window.location.href.split('/').slice(-1)[0]
+// ISSUE UPVOTE
+$("#issue-upvote").click(function() {
+	let pk = window.location.href.split('/')[4]
   $.ajax({
-		url: pk + "/upvote-issue",
+		url: pk + "/issue-upvote",
 		type: "POST",
 		SameSite: "Strict",
 		success: function(data) {
 			if (data) {
-				$('#upvote-issue-display').text(data.upvotes)
-				$('#upvote-issue').attr('data-target', '#casted-vote')
+				$('#issue-upvote-display').text(data.upvotes)
+				$('#issue-upvote').attr('data-target', '#casted-vote')
 			}
 		},
 		error: function(error) {
@@ -22,6 +23,28 @@ $("#upvote-issue").click(function() {
 		}
 	});
 });
+
+// SOLUTION UPVOTE
+$('#solutions').click(function(e) {
+	let id = e.target.parentElement.id
+	if (id.includes('solution-upvote')) {
+		let pk = id.split('-')[2]
+		$.ajax({
+			url: pk + "/solution-upvote",
+			type: "POST",
+			SameSite: "Strict",
+			success: function(data) {
+				if (data) {
+					$('#solution-upvote-display').text(data.upvotes)
+					$('#solution-upvote').attr('data-target', '#casted-vote')
+				}
+			},
+			error: function(error) {
+				console.log("Response error: ", error)
+			}
+		});
+	}
+})
 
 // Ajax Boilerplate
 var csrftoken = Cookies.get('csrftoken');

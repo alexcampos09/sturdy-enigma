@@ -26,7 +26,7 @@ class IssueGetDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        issue = self.get_object()
+        issue = self.object
         context['solutions'] = issue.solution_set.all().order_by()
         context['form'] = SolutionForm()
         casted = issue.issueupvote_set.filter(profile=self.request.user.profile)
@@ -95,4 +95,17 @@ class IssueUpvoteView(LoginRequiredMixin, UpdateView):
             return HttpResponse()
         IssueUpvote(issue=issue, profile=profile).save()
         data = {"upvotes": issue.upvotes()}
+        return JsonResponse(data=data)
+
+class SolutionUpvoteView(LoginRequiredMixin, UpdateView):
+    model = Solution
+
+    def post(self, request, *args, **kwargs):
+        profile = self.request.user.profile
+        solution = self.get_object()
+        casted = solution.solutionupvote_set.filter(profile=profile)
+        if casted:
+            return HttpResponse()
+        SolutionUpvote(solution=solution, profile=profile).save()
+        data = {"upvotes": solution.upvotes()}
         return JsonResponse(data=data)
