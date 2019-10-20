@@ -1,5 +1,6 @@
 # Django
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Count
 from django.http import HttpResponse, JsonResponse
 from django.urls import reverse
 from django.views import View
@@ -16,7 +17,8 @@ class IssueListView(ListView):
 
     def get_queryset(self):
         original_queryset = super().get_queryset()
-        return original_queryset.order_by('-upvotes')
+        queryset = original_queryset.annotate(upvotes=Count('issueupvote')).order_by('-upvotes')
+        return queryset
 
 class IssueGetDetailView(DetailView):
     model = Issue
@@ -25,7 +27,7 @@ class IssueGetDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         issue = self.get_object()
-        context['solutions'] = issue.solution_set.all().order_by('-upvotes')
+        context['solutions'] = issue.solution_set.all().order_by()
         context['form'] = SolutionForm()
         casted = issue.issueupvote_set.filter(profile=self.request.user.profile)
         context['casted'] = True if casted else False
@@ -92,7 +94,5 @@ class IssueUpvoteView(LoginRequiredMixin, UpdateView):
         if casted:
             return HttpResponse()
         IssueUpvote(issue=issue, profile=profile).save()
-        issue.upvotes += 1
-        issue.save()
-        data = {"upvotes": issue.upvotes}
+        data = {"upvotes": issue.upvotes()}
         return JsonResponse(data=data)

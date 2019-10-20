@@ -9,10 +9,12 @@ class Issue(models.Model):
 	profile = models.ForeignKey(Profile, on_delete=models.SET_NULL, blank=True, null=True)
 	title = models.CharField(max_length=120, blank=False, null=False)
 	body = models.TextField(blank=False, null=False)
-	upvotes = models.IntegerField(default=0)
 	# Meta
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
+
+	def upvotes(self):
+		return self.issueupvote_set.count()
 
 	def get_absolute_url(self):
 		return f"/issues/{self.pk}"
@@ -40,10 +42,12 @@ class Solution(models.Model):
 	issue = models.ForeignKey(Issue, on_delete=models.CASCADE)
 	title = models.CharField(max_length=120, blank=False, null=False)
 	body = models.TextField(blank=False, null=False)
-	upvotes = models.IntegerField(default=0)
 	# Meta
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
+
+	def upvotes(self):
+		return self.solutionupvote_set.count()
 
 	def __str__(self):
 		return self.title
@@ -54,7 +58,6 @@ class Solution(models.Model):
 class SolutionUpvote(models.Model):
 	solution = models.ForeignKey(Issue, on_delete=models.CASCADE)
 	profile = models.ForeignKey(Profile, on_delete=models.SET_NULL, blank=True, null=True)
-	upvotes = models.IntegerField(default=0)
 	# Meta
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
