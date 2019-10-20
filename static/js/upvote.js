@@ -36,7 +36,7 @@ $('#solutions').click(function(e) {
 			success: function(data) {
 				if (data) {
 					$('#solution-upvote-display').text(data.upvotes)
-					$('#solution-upvote').attr('data-target', '#casted-vote')
+					$('#solution-upvote-'+pk).attr('data-target', '#casted-vote')
 				}
 			},
 			error: function(error) {

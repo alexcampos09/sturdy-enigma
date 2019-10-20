@@ -27,10 +27,11 @@ class IssueGetDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         issue = self.object
-        context['solutions'] = issue.solution_set.all().order_by()
+        context['solutions'] = issue.solution_set.all().annotate(
+            upvotes=Count('solutionupvote')).order_by('-upvotes')
         context['form'] = SolutionForm()
         casted = issue.issueupvote_set.filter(profile=self.request.user.profile)
-        context['casted'] = True if casted else False
+        context['casted_issue'] = True if casted else False
         return context
 
 class SolutionPostCreateView(LoginRequiredMixin, CreateView):

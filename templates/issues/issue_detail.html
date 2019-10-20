@@ -8,8 +8,8 @@
   <div class="row issue">
     <div class="col-md-1">
       <button id="issue-upvote" type="button" class="btn btn-default" aria-label="Left Align"
-        data-toggle="modal" data-target="{{ casted|yesno:'#casted-vote,' }}">
-        <span class="vote {{ casted|yesno:"on," }}"></span>
+        data-toggle="modal" data-target="{{ casted_issue|yesno:'#casted-vote,' }}">
+        <span class="vote {{ casted_issue|yesno:"on," }}"></span>
       </button>
 
       <h4 class="upvotes" id="issue-upvote-display">{{ issue.upvotes }}</h4>
