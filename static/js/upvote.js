@@ -35,7 +35,7 @@ $('#solutions').click(function(e) {
 			SameSite: "Strict",
 			success: function(data) {
 				if (data) {
-					$('#solution-upvote-display').text(data.upvotes)
+					$('#solution-upvote-display-'+pk).text(data.upvotes)
 					$('#solution-upvote-'+pk).attr('data-target', '#casted-vote')
 				}
 			},

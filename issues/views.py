@@ -1,6 +1,6 @@
 # Django
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Count
+from django.db.models import BooleanField, Case, Count, Value, When
 from django.http import HttpResponse, JsonResponse
 from django.urls import reverse
 from django.views import View
@@ -26,13 +26,27 @@ class IssueGetDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        profile = self.request.user.profile
         issue = self.object
-        context['solutions'] = issue.solution_set.all().annotate(
-            upvotes=Count('solutionupvote')).order_by('-upvotes')
+
+        solutions_queryset = issue.solution_set.all().annotate(
+            upvotes=Count('solutionupvote')
+        ).annotate(
+            casted=Case(
+                When(id__in=self._get_upvoted_solution_pks(profile), then=Value(True)),
+                default=Value(False),
+                output_field=BooleanField(),
+            )
+        ).order_by('-upvotes')
+
+        context['solutions'] = solutions_queryset
         context['form'] = SolutionForm()
-        casted = issue.issueupvote_set.filter(profile=self.request.user.profile)
-        context['casted_issue'] = True if casted else False
+        casted = issue.issueupvote_set.filter(profile=profile)
+        context['issue_casted'] = True if casted else False
         return context
+
+    def _get_upvoted_solution_pks(self, profile):
+        return [upvote.solution.id for upvote in SolutionUpvote.objects.filter(profile=profile)]
 
 class SolutionPostCreateView(LoginRequiredMixin, CreateView):
     model = Solution

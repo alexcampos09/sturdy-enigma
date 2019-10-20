@@ -8,8 +8,8 @@
   <div class="row issue">
     <div class="col-md-1">
       <button id="issue-upvote" type="button" class="btn btn-default" aria-label="Left Align"
-        data-toggle="modal" data-target="{{ casted_issue|yesno:'#casted-vote,' }}">
-        <span class="vote {{ casted_issue|yesno:"on," }}"></span>
+        data-toggle="modal" data-target="{{ issue_casted|yesno:'#casted-vote,' }}">
+        <span class="vote {{ issue_casted|yesno:"on," }}"></span>
       </button>
 
       <h4 class="upvotes" id="issue-upvote-display">{{ issue.upvotes }}</h4>
@@ -35,17 +35,18 @@
       <div class="row solution">
         <div class="col-md-1">
           <button id="solution-upvote-{{ solution.pk }}" type="button" class="btn btn-default"
-            aria-label="Left Align" data-toggle="modal" data-target="{{ casted|yesno:'#casted-vote,' }}">
-            <span class="vote"></span>
+            aria-label="Left Align" data-toggle="modal"
+            data-target="{{ solution.casted|yesno:'#casted-vote,' }}">
+            <span class="vote {{ solution.casted|yesno:"on," }}"></span>
           </button>
-          <h4 class="upvotes">{{ solution.upvotes }}</h4>
+          <h4 class="upvotes" id="solution-upvote-display-{{ solution.pk }}">{{ solution.upvotes }}</h4>
         </div>
 
         <div class="col-md-11">
-            <h3>{{ solution.title }}</h3>
-            <p>{{ solution.body }}</p>
-            <p>{{ solution.profile }}</p>
-            <p>{{ solution.created }}</p>
+          <h3>{{ solution.title }}</h3>
+          <p>{{ solution.body }}</p>
+          <p>{{ solution.profile }}</p>
+          <p>{{ solution.created }}</p>
         </div>
       </div>
       <hr>
